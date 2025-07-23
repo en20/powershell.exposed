@@ -1,0 +1,227 @@
+[
+  {
+    "name": "ASPX FILE REFERENCE",
+    "regex": "\\.aspx",
+    "flags": "i",
+    "score": 75,
+    "severity": "high",
+    "description": "References to ASPX files, commonly used in web shells and malicious uploads",
+    "category": "ASPX FILE REFERENCE"
+  },
+  {
+    "name": "BASE64 TO STRING CONVERTION",
+    "regex": "(\\[System\\.Convert\\]::FromBase64String|FromBase64String|\\[Convert\\]::FromBase64String)",
+    "flags": "i",
+    "score": 80,
+    "severity": "high",
+    "description": "Base64 string conversion operations, often used to decode malicious payloads",
+    "category": "BASE64 TO STRING CONVERTION"
+  },
+  {
+    "name": "ENCODED COMMAND",
+    "regex": "(-EncodedCommand|-enc|-e\\s)",
+    "flags": "i",
+    "score": 85,
+    "severity": "critical",
+    "description": "PowerShell encoded command execution, commonly used to bypass detection",
+    "category": "ENCODED COMMAND"
+  },
+  {
+    "name": "FAIRLY SUSPICIOUS KEYWORDS",
+    "regex": "(mimikatz|sekurlsa|logonpasswords|-WindowStyle\\s+Hidden|-w\\s+hidden|WindowStyle.*Hidden|-ExecutionPolicy\\s+Bypass|-ep\\s+bypass|ExecutionPolicy.*Bypass|DownloadString|DownloadFile|WebClient|Invoke-WebRequest.*OutFile|IWR.*OutFile|Get-Credential|Export-Clixml.*cred|Import-Clixml.*cred)",
+    "flags": "i",
+    "score": 80,
+    "severity": "high",
+    "description": "Collection of suspicious PowerShell keywords and patterns commonly used in malicious activities",
+    "category": "FAIRLY SUSPICIUS KEYWORDS"
+  },
+  {
+    "name": "LONG BASE64 STRING",
+    "regex": "[A-Za-z0-9+/]{100,}={0,2}",
+    "flags": "g",
+    "score": 70,
+    "severity": "medium",
+    "description": "Long Base64 encoded strings, potentially containing encoded payloads",
+    "category": "LONG BASE64 STRING"
+  },
+  {
+    "name": "TEXT.ENCODING AND BASE64 STRING MANIPULATION",
+    "regex": "(\\[System\\.Text\\.Encoding\\]::UTF8|\\[Text\\.Encoding\\]::UTF8|\\[System\\.Text\\.Encoding\\]::Unicode|\\[Text\\.Encoding\\]::Unicode|\\[System\\.Text\\.Encoding\\]::ASCII|\\.GetString\\(.*FromBase64String)",
+    "flags": "i",
+    "score": 80,
+    "severity": "high",
+    "description": "Text encoding manipulation combined with Base64 operations, commonly used in payload obfuscation",
+    "category": "tEXT.eNCODING AND BASE64 STRING MANIPULATION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #1: Mimikatz Download and Execute",
+    "regex": "(IEX.*New-Object.*Net\\.WebClient.*DownloadString.*Invoke-Mimikatz|Invoke-Mimikatz.*-DumpCreds)",
+    "flags": "i",
+    "score": 100,
+    "severity": "critical",
+    "description": "Downloads and executes Mimikatz via PowerShell download cradle (Atomic Test #1)",
+    "category": "MIMIKATZ EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #2: BloodHound from Local Disk",
+    "regex": "(import-module.*SharpHound|Invoke-BloodHound.*-OutputDirectory)",
+    "flags": "i",
+    "score": 95,
+    "severity": "critical",
+    "description": "Executes BloodHound/SharpHound from local disk for AD enumeration (Atomic Test #2)",
+    "category": "BLOODHOUND EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #3: BloodHound from Memory",
+    "regex": "(IEX.*New-Object.*Net\\.Webclient.*DownloadString.*SharpHound|Remote download.*SharpHound.*into memory)",
+    "flags": "i",
+    "score": 95,
+    "severity": "critical", 
+    "description": "Downloads and executes BloodHound directly from memory via download cradle (Atomic Test #3)",
+    "category": "FILELESS BLOODHOUND"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #4: Mimikatz via PsSendKeys",
+    "regex": "(PsSendKeys|WScript\\.Shell|SendKeys.*mimikatz|AppActivate.*Notepad)",
+    "flags": "i",
+    "score": 90,
+    "severity": "high",
+    "description": "Executes Mimikatz using automated keystrokes via PsSendKeys technique (Atomic Test #4)",
+    "category": "AUTOMATED EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #5: Invoke-AppPathBypass",
+    "regex": "(Invoke-AppPathBypass|enigma0x3.*AppPathBypass)",
+    "flags": "i",
+    "score": 85,
+    "severity": "high",
+    "description": "UAC bypass technique using application paths (Atomic Test #5)",
+    "category": "UAC BYPASS"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #6: MsXml COM Object",
+    "regex": "(New-Object.*-ComObject.*MsXml2\\.ServerXmlHttp|comMsXml\\.Open.*GET|comMsXml\\.Send)",
+    "flags": "i",
+    "score": 80,
+    "severity": "high",
+    "description": "Uses MsXml COM object for web requests and payload execution (Atomic Test #6)",
+    "category": "COM OBJECT ABUSE"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #7: PowerShell XML Requests",
+    "regex": "(New-Object.*System\\.Xml\\.XmlDocument|Xml\\.Load.*http|Xml\\.command\\.a\\.execute)",
+    "flags": "i",
+    "score": 75,
+    "severity": "medium",
+    "description": "Downloads and executes payload via XML document parsing (Atomic Test #7)",
+    "category": "XML PAYLOAD EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #8: PowerShell Invoke MSHTA",
+    "regex": "(mshta\\.exe.*javascript:.*GetObject.*script:|GetObject.*script:.*\\.sct)",
+    "flags": "i",
+    "score": 90,
+    "severity": "high",
+    "description": "Uses MSHTA to execute JavaScript that downloads and runs PowerShell payload (Atomic Test #8)",
+    "category": "MSHTA PAYLOAD EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #9: Invoke-DownloadCradle",
+    "regex": "(Invoke-DownloadCradle)",
+    "flags": "i",
+    "score": 85,
+    "severity": "high",
+    "description": "Uses various download cradle techniques for payload delivery (Atomic Test #9)",
+    "category": "DOWNLOAD CRADLE"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #10: Fileless Script Execution",
+    "regex": "(reg\\.exe.*add.*HKEY_CURRENT_USER|gp.*HKCU:.*Software.*Classes|\\[Text\\.Encoding\\]::ASCII\\.GetString|\\[Convert\\]::FromBase64String.*gp)",
+    "flags": "i",
+    "score": 95,
+    "severity": "critical",
+    "description": "Executes PowerShell payload stored in Windows Registry (Atomic Test #10)",
+    "category": "REGISTRY PAYLOAD EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #11: NTFS Alternate Data Stream",
+    "regex": "(Add-Content.*-Stream|Get-Content.*-Stream.*streamcommand|NTFS_ADS)",
+    "flags": "i",
+    "score": 90,
+    "severity": "high",
+    "description": "Stores and executes PowerShell code in NTFS Alternate Data Streams (Atomic Test #11)",
+    "category": "ADS EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #12: PowerShell Session Creation",
+    "regex": "(New-PSSession.*-ComputerName|Test-Connection.*COMPUTERNAME)",
+    "flags": "i",
+    "score": 70,
+    "severity": "medium",
+    "description": "Creates and uses remote PowerShell sessions (Atomic Test #12)",
+    "category": "REMOTE POWERSHELL"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #13-16: Command Parameter Variations",
+    "regex": "(Out-ATHPowerShellCommandLineParameter|CommandLineSwitchType.*Hyphen|CommandParamVariation)",
+    "flags": "i",
+    "score": 75,
+    "severity": "medium",
+    "description": "Tests various PowerShell command-line parameter variations (Atomic Tests #13-16)",
+    "category": "PARAMETER VARIATION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #17: Obfuscated PowerShell Execution",
+    "regex": "(JgAgACgAZwBjAG0AIAAoACcAaQBlAHsAMAB9ACcAIAAtAGYAIAAnAHgAJwApACkAIAAoACIAVwByACIAKwAiAGkAdAAiACsAIgBlAC0ASAAiACsAIgBvAHMAdAAgACcASAAiACsAIgBlAGwAIgArACIAbABvACwAIABmAHIAIgArACIAbwBtACAAUAAiACsAIgBvAHcAIgArACIAZQByAFMAIgArACIAaAAiACsAIgBlAGwAbAAhACcAIgApAA==|powershell\\.exe.*-e.*[A-Za-z0-9+/]{50,})",
+    "flags": "i",
+    "score": 95,
+    "severity": "critical",
+    "description": "Executes heavily obfuscated PowerShell commands using Base64 encoding (Atomic Test #17)",
+    "category": "OBFUSCATED EXECUTION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #18: Malicious Cmdlets Simulation",
+    "regex": "(Add-Persistence|Find-AVSignature|Get-GPPPassword|Get-Keystrokes|Get-VaultCredential|Install-SSP|Invoke-CredentialInjection|Invoke-DllInjection|Invoke-Mimikatz|Invoke-NinjaCopy|Invoke-Portscan|Invoke-ReflectivePEInjection|Invoke-Shellcode|Invoke-TokenManipulation|Invoke-WmiCommand|Out-CompressedDll|Out-EncodedCommand|Out-EncryptedScript|Out-Minidump|PowerUp|PowerView|Set-CriticalProcess|Set-MasterBootRecord)",
+    "flags": "i",
+    "score": 100,
+    "severity": "critical",
+    "description": "Execution of known malicious PowerShell cmdlets from offensive frameworks (Atomic Test #18)",
+    "category": "MALICIOUS CMDLETS"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #19: PowerUp Invoke-AllChecks",
+    "regex": "(PowerUp.*Invoke-AllChecks|iex.*iwr.*PowerSploit.*PowerUp|Invoke-AllChecks)",
+    "flags": "i",
+    "score": 95,
+    "severity": "critical",
+    "description": "Runs PowerUp privilege escalation checks (Atomic Test #19)",
+    "category": "PRIVILEGE ESCALATION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #20: DNS Nslookup Abuse",
+    "regex": "(nslookup.*-q=txt|powershell.*nslookup.*\\[-1\\])",
+    "flags": "i",
+    "score": 85,
+    "severity": "high",
+    "description": "Abuses nslookup and DNS TXT records for command execution (Atomic Test #20)",
+    "category": "DNS ABUSE"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #21: SOAPHound BloodHound Data Dump",
+    "regex": "(SOAPHound.*--bhdump|SOAPHound.*--outputdirectory)",
+    "flags": "i",
+    "score": 90,
+    "severity": "high",
+    "description": "Uses SOAPHound to dump BloodHound data for AD reconnaissance (Atomic Test #21)",
+    "category": "AD ENUMERATION"
+  },
+  {
+    "name": "ATOMIC T1059.001 - Test #22: SOAPHound Cache Building",
+    "regex": "(SOAPHound.*--buildcache|SOAPHound.*--cachefilename)",
+    "flags": "i",
+    "score": 85,
+    "severity": "high",
+    "description": "Uses SOAPHound to build enumeration cache for Active Directory (Atomic Test #22)",
+    "category": "AD CACHE BUILDING"
+  }
+]
