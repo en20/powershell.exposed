@@ -71,17 +71,42 @@ export default function Home() {
       /^(Get|Set|New|Remove|Add|Install|Uninstall|Start|Stop|Restart|Test|Invoke|Import|Export|Clear|Show|Hide|Enable|Disable|Update|Format|Select|Where|Sort|Group|Measure|Compare|Copy|Move|Rename|Out)-[A-Za-z]+/,
       // Aliases comuns
       /^(ls|dir|cat|type|cp|copy|mv|move|rm|del|ps|kill|start|echo|cls|clear|pwd|cd|mkdir|rmdir|grep|findstr|curl|wget|iwr|iwmi|gwmi|gcm|gci|gps|gsv|alias|help|man|more|less|head|tail|tee|wc|cut|awk|sed|sort|uniq)/,
+      // PowerShell executables
+      /^(powershell\.exe|pwsh\.exe)/,
+      // Registry commands
+      /^reg\.exe/,
+      // MSHTA commands
+      /^mshta\.exe/,
+      // CMD commands  
+      /^cmd\.exe/,
+      // System executables
+      /^[A-Za-z]:[\\\/][\w\s\-\\\/\.]+\.exe/,
+      /^\.?[\\\/]?[\w\-]+\.exe/,
       // Comandos com parâmetros
       /^[A-Za-z][A-Za-z0-9\-]*\s+(-[A-Za-z]+|\w+)/,
       // Variáveis do PowerShell
       /\$[A-Za-z_][A-Za-z0-9_]*/,
       // Pipes e redirecionamentos
       /\||\>\>?|\<\<?/,
-      // Expressões PowerShell
+      // Expressões PowerShell (incluindo .NET)
       /\[[\w\.\[\]]+\]/,
-      // Comandos executáveis
-      /^[A-Za-z]:[\\\/][\w\s\-\\\/\.]+\.exe/,
-      /^\.?[\\\/]?[\w\-]+\.exe/,
+      // Base64 e encoding patterns
+      /\[Convert\]::/,
+      /\[Text\.Encoding\]::/,
+      /FromBase64String/,
+      /GetString/,
+      // IEX patterns
+      /IEX\s*\(/,
+      /Invoke-Expression/,
+      // Download patterns
+      /New-Object.*Net\.WebClient/,
+      /DownloadString/,
+      /DownloadFile/,
+      // COM Object patterns
+      /New-Object.*-ComObject/,
+      // Registry access patterns
+      /gp\s+HKCU:/,
+      /Get-ItemProperty.*HKEY/,
       // Comandos do sistema
       /^(cmd|powershell|pwsh|wscript|cscript|mshta|rundll32|regsvr32|sc|net|netsh|reg|wmic|tasklist|taskkill|ipconfig|netstat|ping|nslookup|telnet|ftp|ssh|scp|curl|certutil|bitsadmin|schtasks)/,
       // Números e operadores matemáticos
@@ -93,7 +118,13 @@ export default function Home() {
       // Chaves para script blocks
       /\{.*\}/,
       // Array notation
-      /\@\(/
+      /\@\(/,
+      // Function definitions
+      /function\s+\w+/,
+      // Try-catch blocks
+      /try\s*\{.*\}\s*catch/,
+      // Loops and conditionals
+      /(foreach|for|while|if)\s*\(/
     ];
 
     // Verifica se o comando corresponde a algum padrão válido
