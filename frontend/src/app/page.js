@@ -12,26 +12,9 @@ export default function Home() {
   const [error, setError] = useState("");
   const [command, setCommand] = useState("");
   const [result, setResult] = useState(null); // { type: 'safe'|'malicious', severity: 'leve'|'médio'|'crítico' }
-  const [sampleCommands, setSampleCommands] = useState([]);
   const router = useRouter();
 
-  // Carregar comandos de exemplo do arquivo
   useEffect(() => {
-    const loadSampleCommands = async () => {
-      try {
-        const response = await fetch('/sample-commands.txt');
-        const text = await response.text();
-        const commands = text.split('\n').filter(cmd => cmd.trim() !== '');
-        setSampleCommands(commands);
-      } catch (error) {
-        console.error('Erro ao carregar comandos de exemplo:', error);
-      }
-    };
-    loadSampleCommands();
-  }, []);
-
-  useEffect(() => {
-    // Tenta buscar o usuário do localStorage (ajuste conforme seu fluxo real)
     const userData = localStorage.getItem("user");
     if (userData) {
       setUser(JSON.parse(userData));
@@ -168,15 +151,6 @@ export default function Home() {
     router.push(`/analysis?cmd=${encodeURIComponent(command.trim())}`);
   };
 
-  // Função para carregar comando aleatório
-  const loadRandomCommand = () => {
-    if (sampleCommands.length > 0) {
-      const randomIndex = Math.floor(Math.random() * sampleCommands.length);
-      setCommand(sampleCommands[randomIndex]);
-      setError(""); // Limpa erros ao carregar comando válido
-    }
-  };
-
   // Validação em tempo real quando o usuário digita
   const handleCommandChange = (e) => {
     const newCommand = e.target.value;
@@ -243,16 +217,6 @@ export default function Home() {
             message={!error && command.trim() === "" ? "Examples: Get-Process | Where-Object CPU -gt 100 | Select Name, CPU" : ""}
           />
         </form>
-
-        {/* Random Command Button */}
-        <div className="w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl mb-6 sm:mb-8 text-center">
-          <ThemedButton 
-            onClick={loadRandomCommand}
-            variant="secondary"
-          >
-            Load Random Command
-          </ThemedButton>
-        </div>
 
         {/* Result area */}
         <div className="w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl min-h-[80px] sm:min-h-[100px] flex items-center justify-center border rounded-lg p-4 sm:p-6" style={{backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)'}}>
