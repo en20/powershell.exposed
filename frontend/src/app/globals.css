@@ -67,3 +67,92 @@ body {
   width: 20px;
   height: 20px;
 }
+
+/* Drawer animations */
+.drawer-backdrop {
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-backdrop.show {
+  opacity: 1;
+}
+
+.drawer-container {
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.drawer-container.show {
+  transform: translateX(0);
+}
+
+/* Drawer shadow and styling */
+.drawer-shadow {
+  box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.3), -4px 0 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Drawer content animations */
+.drawer-content-animate {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.drawer-content-animate.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.drawer-content-animate:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.drawer-content-animate:nth-child(2) {
+  transition-delay: 0.15s;
+}
+
+.drawer-content-animate:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.drawer-content-animate:nth-child(4) {
+  transition-delay: 0.25s;
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 768px) {
+  .navbar-mobile {
+    padding: 0.75rem 1rem;
+  }
+  
+  .navbar-title {
+    font-size: 1.125rem;
+  }
+}
+
+/* Drawer content scrolling */
+.drawer-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.drawer-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.drawer-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.drawer-content::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+.drawer-content::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}

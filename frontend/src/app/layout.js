@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { DrawerProvider } from "./contexts/DrawerContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,9 +28,11 @@ export default function RootLayout({ children }) {
         style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--background)', color: 'var(--foreground)' }}
       >
         <ThemeProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <DrawerProvider>
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </DrawerProvider>
         </ThemeProvider>
       </body>
     </html>
